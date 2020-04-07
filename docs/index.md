@@ -2,7 +2,7 @@
 
 The app visualizes stats of confirmed COVID-19 cases in Finland
 
-<img src="./assets/img/screenshot.png" width="320" />
+<img src="../assets/img/screenshot.png" width="320" />
 
 ## Data
 

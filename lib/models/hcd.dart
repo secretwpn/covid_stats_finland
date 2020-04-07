@@ -19,11 +19,5 @@ class Hcd {
 
   int getConfirmedTotal() => samples.fold(0, (t, e) => t + e.value);
 
-  static int getConfirmedToDate(DateTime dateTime, List<Sample> samples) =>
-      samples.where((s) => s.date.compareTo(dateTime) < 0).fold(
-            0,
-            (t, e) => t + e.value,
-          );
-
-  int getConfirmed(DateTime dateTime) => getConfirmedToDate(dateTime, samples);
+  int getConfirmed(DateTime dateTime) => Sample.getConfirmedToDate(dateTime, samples);
 }

@@ -11,6 +11,21 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      themeMode: ThemeMode.light,
+      theme: ThemeData.from(colorScheme: ColorScheme.fromSwatch(
+        backgroundColor: Colors.white,
+        primaryColorDark: Colors.black,
+        accentColor: Colors.redAccent,
+        primarySwatch: Colors.red,
+        brightness: Brightness.light,
+      )),
+      darkTheme: ThemeData.from(colorScheme: ColorScheme.fromSwatch(
+        backgroundColor: Colors.black,
+        primaryColorDark: Colors.white,
+        accentColor: Colors.blue,
+        primarySwatch: Colors.blue,
+        brightness: Brightness.dark,
+      )),
       home: Scaffold(
         appBar: AppBar(
           title: Text('COVID-19 Stats Finland'),

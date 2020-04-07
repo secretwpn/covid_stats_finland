@@ -17,6 +17,14 @@ class Sample {
         healthCareDistrict: json["healthCareDistrict"] as String,
       );
 
-  Map<String, dynamic> toJson() =>
-      {"value": value, "date": date, "healthCareDistrict": healthCareDistrict};
+  Map<String, dynamic> toJson() => {
+        "value": value,
+        "date": date,
+        "healthCareDistrict": healthCareDistrict,
+      };
+
+  static int getConfirmedToDate(DateTime dateTime, List<Sample> samples) =>
+      samples
+          .where((s) => s.date.compareTo(dateTime) < 0)
+          .fold(0, (t, e) => t + e.value);
 }
