@@ -1,17 +1,17 @@
 import 'dart:convert';
 
-class Sample {
+class ConfirmedSample {
   final int value;
   final DateTime date;
   final String healthCareDistrict;
 
-  Sample({this.value, this.date, this.healthCareDistrict});
+  ConfirmedSample({this.value, this.date, this.healthCareDistrict});
 
-  factory Sample.fromRawJson(String str) => Sample.fromJson(json.decode(str));
+  factory ConfirmedSample.fromRawJson(String str) => ConfirmedSample.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory Sample.fromJson(Map<String, dynamic> json) => Sample(
+  factory ConfirmedSample.fromJson(Map<String, dynamic> json) => ConfirmedSample(
         value: json["value"] as int,
         date: DateTime.parse(json["date"] as String),
         healthCareDistrict: json["healthCareDistrict"] as String,
@@ -23,7 +23,7 @@ class Sample {
         "healthCareDistrict": healthCareDistrict,
       };
 
-  static int getConfirmedToDate(DateTime dateTime, List<Sample> samples) =>
+  static int getConfirmedToDate(DateTime dateTime, List<ConfirmedSample> samples) =>
       samples
           .where((s) => s.date.compareTo(dateTime) < 0)
           .fold(0, (t, e) => t + e.value);

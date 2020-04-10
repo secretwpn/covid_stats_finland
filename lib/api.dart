@@ -22,7 +22,7 @@ Future<String> fakeFetchDataSetRaw() async {
 }
 
 Future<ApiResponse> fetchDataSet() async {
-  String rawJson = await fakeFetchDataSetRaw();
+  String rawJson = await fetchDataSetRaw();
   var apiResponse = json.decode(rawJson);
   var confirmedSamplesByHcd = apiResponse["confirmed"] as Map<String, dynamic>;
 
