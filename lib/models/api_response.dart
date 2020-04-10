@@ -1,7 +1,9 @@
 import 'package:covid_stats_finland/models/hcd.dart';
+import 'package:covid_stats_finland/models/hospitalized_hcd.dart';
 
 class ApiResponse {
-  final Set<Hcd> districts;
+  final Set<Hcd> confirmedHcdList;
+  final Set<HospitalizedHcd> hospitalizedHcdList;
 
-  ApiResponse(this.districts);
+  ApiResponse(this.confirmedHcdList, this.hospitalizedHcdList);
 }

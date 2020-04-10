@@ -15,12 +15,14 @@ class Hcd {
           json[name].map(
             (x) => ConfirmedSample.fromJson(x),
           ),
-        ),
+        ).where((sample) => sample.value > 5).toList(),
       );
 
   int getConfirmedTotal() => samples.fold(0, (t, e) => t + e.value);
 
   int getConfirmed(DateTime dateTime) =>
       ConfirmedSample.getConfirmedToDate(dateTime, samples);
-  getMaxDate() => maxBy<ConfirmedSample, DateTime>(samples, (s) => s.date)?.date;
+
+  getMaxDate() =>
+      maxBy<ConfirmedSample, DateTime>(samples, (s) => s.date)?.date;
 }
