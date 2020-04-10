@@ -1,0 +1,1 @@
+enum TrendMode { daily, cumulative }
