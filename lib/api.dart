@@ -4,21 +4,24 @@ import 'package:covid_stats_finland/models/api_response.dart';
 import 'package:covid_stats_finland/models/hcd.dart';
 import 'package:covid_stats_finland/models/hospitalized_hcd.dart';
 import 'package:covid_stats_finland/models/hospitalized_sample.dart';
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:http/http.dart' as http;
+
+// Uncomment lines below if you want to use local files for development
+// and use fakeFetchXXXRaw() instead of fetchRawJson(xxxUrl)
+// import 'package:flutter/services.dart' show rootBundle;
+// Future<String> fakeFetchConfirmedRaw() async {
+//   return await rootBundle.loadString('assets/data-confirmed.json');
+// }
+
+// Future<String> fakeFetchHospitalizedRaw() async {
+//   return await rootBundle.loadString('assets/data-hospitalized.json');
+// }
 
 const confirmedUrl =
     'https://w3qa5ydb4l.execute-api.eu-west-1.amazonaws.com/prod/processedThlData';
 const hospitalizedUrl =
     'https://w3qa5ydb4l.execute-api.eu-west-1.amazonaws.com/prod/finnishCoronaHospitalData';
 
-Future<String> fakeFetchConfirmedRaw() async {
-  return await rootBundle.loadString('assets/data-confirmed.json');
-}
-
-Future<String> fakeFetchHospitalizedRaw() async {
-  return await rootBundle.loadString('assets/data-hospitalized.json');
-}
 
 Future<Set<Hcd>> fetchConfirmed() async {
   String rawJson = await fetchRawJson(confirmedUrl);
