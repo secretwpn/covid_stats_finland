@@ -22,4 +22,4 @@ The app is tested to run on Android and iOS, but should also work on macOS and, 
 
 Small scale COVID-19 related apps are not allowed to be distributed through Google Play, and this app is no exception.
 
-Self signed release build is available here: [app-release.apk](../apk/app-release.apk)
+Self signed release build is available here: [app-release.apk](/raw/master/apk/app-release.apk)
