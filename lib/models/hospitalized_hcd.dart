@@ -12,10 +12,10 @@ class HospitalizedHcd {
   int getConfirmed(DateTime dateTime) =>
       HospitalizedSample.getConfirmedToDate(dateTime, samples);
 
-  getMaxDate() =>
-      maxBy<HospitalizedSample, DateTime>(samples, (s) => s.date)?.date;
-
-  getLatestTotal() => getLatestSample().total;
   HospitalizedSample getLatestSample() =>
       samples.firstWhere((sample) => sample.date == getMaxDate());
+
+  getLatestTotal() => getLatestSample().total;
+  getMaxDate() =>
+      maxBy<HospitalizedSample, DateTime>(samples, (s) => s.date)?.date;
 }

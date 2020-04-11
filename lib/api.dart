@@ -4,22 +4,13 @@ import 'package:covid_stats_finland/models/api_response.dart';
 import 'package:covid_stats_finland/models/hcd.dart';
 import 'package:covid_stats_finland/models/hospitalized_hcd.dart';
 import 'package:covid_stats_finland/models/hospitalized_sample.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:http/http.dart' as http;
 
 const confirmedUrl =
     'https://w3qa5ydb4l.execute-api.eu-west-1.amazonaws.com/prod/processedThlData';
 const hospitalizedUrl =
     'https://w3qa5ydb4l.execute-api.eu-west-1.amazonaws.com/prod/finnishCoronaHospitalData';
-
-Future<String> fetchRawJson(String url) async {
-  final response = await http.get(url);
-  if (response.statusCode == 200) {
-    return utf8.decode(response.bodyBytes);
-  } else {
-    throw Exception('Failed to load dataSet');
-  }
-}
 
 Future<String> fakeFetchConfirmedRaw() async {
   return await rootBundle.loadString('assets/data-confirmed.json');
@@ -43,6 +34,13 @@ Future<Set<Hcd>> fetchConfirmed() async {
   return hcds;
 }
 
+Future<ApiResponse> fetchData() async {
+  var confirmedHcds = await fetchConfirmed();
+  var hospitalizedHcds = await fetchHospitalized();
+
+  return ApiResponse(confirmedHcds, hospitalizedHcds);
+}
+
 Future<Set<HospitalizedHcd>> fetchHospitalized() async {
   String rawJson = await fetchRawJson(hospitalizedUrl);
   var apiResponse = json.decode(rawJson);
@@ -58,7 +56,10 @@ Future<Set<HospitalizedHcd>> fetchHospitalized() async {
       .map(
         (hcdId) => HospitalizedHcd(
           name: hcdId,
-          samples: samples.where((sample) => sample.hcdId == hcdId).toList(),
+          samples: samples
+              .where((sample) => sample.hcdId == hcdId)
+              .where((sample) => sample.total > 5)
+              .toList(),
         ),
       )
       .toSet();
@@ -66,9 +67,11 @@ Future<Set<HospitalizedHcd>> fetchHospitalized() async {
   return hcds;
 }
 
-Future<ApiResponse> fetchData() async {
-  var confirmedHcds = await fetchConfirmed();
-  var hospitalizedHcds = await fetchHospitalized();
-
-  return ApiResponse(confirmedHcds, hospitalizedHcds);
+Future<String> fetchRawJson(String url) async {
+  final response = await http.get(url);
+  if (response.statusCode == 200) {
+    return utf8.decode(response.bodyBytes);
+  } else {
+    throw Exception('Failed to load dataSet');
+  }
 }

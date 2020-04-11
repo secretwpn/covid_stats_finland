@@ -5,9 +5,12 @@ class AdvancedFutureBuilder<T> extends StatelessWidget {
   final Widget Function(T) successWidgetBuilder;
   final Widget Function(T) errorWidgetBuilder;
 
-  const AdvancedFutureBuilder({Key key, this.future, this.successWidgetBuilder, this.errorWidgetBuilder})
+  const AdvancedFutureBuilder(
+      {Key key,
+      this.future,
+      this.successWidgetBuilder,
+      this.errorWidgetBuilder})
       : super(key: key);
-
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +20,9 @@ class AdvancedFutureBuilder<T> extends StatelessWidget {
         if (snapshot.hasData) {
           return this.successWidgetBuilder(snapshot.data);
         } else if (snapshot.hasError) {
-          return this.errorWidgetBuilder == null ? Text("${snapshot.error}") : this.errorWidgetBuilder(snapshot.error);
+          return this.errorWidgetBuilder == null
+              ? Text("${snapshot.error}")
+              : this.errorWidgetBuilder(snapshot.error);
         }
         return Container(
           alignment: Alignment.center,

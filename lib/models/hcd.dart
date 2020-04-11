@@ -18,10 +18,10 @@ class Hcd {
         ).where((sample) => sample.value > 5).toList(),
       );
 
-  int getConfirmedTotal() => samples.fold(0, (t, e) => t + e.value);
-
   int getConfirmed(DateTime dateTime) =>
       ConfirmedSample.getConfirmedToDate(dateTime, samples);
+
+  int getConfirmedTotal() => samples.fold(0, (t, e) => t + e.value);
 
   getMaxDate() =>
       maxBy<ConfirmedSample, DateTime>(samples, (s) => s.date)?.date;

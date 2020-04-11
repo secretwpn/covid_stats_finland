@@ -50,8 +50,8 @@ class _MyAppState extends State<MyApp> {
         confirmedHcdList.sort(
             (a, b) => b.getConfirmedTotal().compareTo(a.getConfirmedTotal()));
 
-        hospitalizedHcdList.sort(
-            (a, b) => b.getLatestTotal().compareTo(a.getLatestTotal()));
+        hospitalizedHcdList
+            .sort((a, b) => b.getLatestTotal().compareTo(a.getLatestTotal()));
 
         return MultiProvider(
           providers: <SingleChildWidget>[

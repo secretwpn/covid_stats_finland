@@ -1,8 +1,9 @@
-import 'package:covid_stats_finland/util.dart' as util;
-import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:covid_stats_finland/constants.dart';
 import 'package:covid_stats_finland/models/confirmed_sample.dart';
 import 'package:covid_stats_finland/models/trend_mode.dart';
+import 'package:covid_stats_finland/util.dart' as util;
+import 'package:flutter/material.dart';
 
 class ConfirmedTrend extends StatelessWidget {
   final List<ConfirmedSample> samples;
@@ -41,9 +42,9 @@ class ConfirmedTrend extends StatelessWidget {
   }
 
   charts.TimeSeriesChart _buildCumulativeChart(BuildContext context) {
-    charts.Color gridColor = _gridColor(context);
-    charts.Color labelColor = _labelColor(context);
-    charts.Color lineColor = _lineColor(context);
+    var gridColor = util.gridColor(context);
+    var labelColor = util.labelColor(context);
+    var lineColor = util.lineColor(context);
     return charts.TimeSeriesChart(
       [
         charts.Series<ConfirmedSample, DateTime>(
@@ -56,12 +57,10 @@ class ConfirmedTrend extends StatelessWidget {
         )
       ],
       dateTimeFactory: const charts.LocalDateTimeFactory(),
-      animate: true,
+      animate: false,
       defaultInteractions: true,
       defaultRenderer: charts.LineRendererConfig<DateTime>(),
       primaryMeasureAxis: charts.NumericAxisSpec(
-        tickProviderSpec:
-            charts.BasicNumericTickProviderSpec(desiredTickCount: 8),
         renderSpec: charts.GridlineRendererSpec(
           lineStyle: charts.LineStyleSpec(color: gridColor),
           labelStyle: charts.TextStyleSpec(color: labelColor),
@@ -86,14 +85,17 @@ class ConfirmedTrend extends StatelessWidget {
               charts.LinePointHighlighterFollowLineType.nearest,
           showHorizontalFollowLine:
               charts.LinePointHighlighterFollowLineType.nearest,
-          symbolRenderer: charts.CircleSymbolRenderer(isSolid: false),
         ),
       ],
+      layoutConfig: chartLayout,
       selectionModels: [
         charts.SelectionModelConfig(
           changedListener: (charts.SelectionModel model) {
-            if (model.hasDatumSelection)
-              onSelectValue(_getDateTime(model), _getValue(model));
+            if (model.hasDatumSelection) {
+              var dateTime = _getDateTime(model);
+              var value = _getValue(model);
+              onSelectValue(dateTime, value);
+            }
           },
         )
       ],
@@ -101,9 +103,9 @@ class ConfirmedTrend extends StatelessWidget {
   }
 
   charts.TimeSeriesChart _buildDailyChart(BuildContext context) {
-    var gridColor = _gridColor(context);
-    var labelColor = _labelColor(context);
-    var lineColor = _lineColor(context);
+    var gridColor = util.gridColor(context);
+    var labelColor = util.labelColor(context);
+    var lineColor = util.lineColor(context);
     return charts.TimeSeriesChart(
       [
         charts.Series<ConfirmedSample, DateTime>(
@@ -119,8 +121,6 @@ class ConfirmedTrend extends StatelessWidget {
       defaultInteractions: true,
       defaultRenderer: charts.BarRendererConfig<DateTime>(),
       primaryMeasureAxis: charts.NumericAxisSpec(
-        tickProviderSpec:
-            charts.BasicNumericTickProviderSpec(desiredTickCount: 8),
         renderSpec: charts.GridlineRendererSpec(
           lineStyle: charts.LineStyleSpec(color: gridColor),
           labelStyle: charts.TextStyleSpec(color: labelColor),
@@ -148,6 +148,7 @@ class ConfirmedTrend extends StatelessWidget {
           symbolRenderer: charts.CircleSymbolRenderer(isSolid: false),
         ),
       ],
+      layoutConfig: chartLayout,
       selectionModels: [
         charts.SelectionModelConfig(
           changedListener: (charts.SelectionModel model) {
@@ -159,22 +160,9 @@ class ConfirmedTrend extends StatelessWidget {
     );
   }
 
-  int _getValue(charts.SelectionModel model) =>
-      model.selectedSeries[0].measureFn(model.selectedDatum[0].index);
-
   DateTime _getDateTime(charts.SelectionModel model) =>
       model.selectedSeries[0].domainFn(model.selectedDatum[0].index);
 
-  charts.Color _gridColor(BuildContext context) =>
-      Theme.of(context).brightness == Brightness.light
-          ? util.fromDartColor(Colors.black12)
-          : util.fromDartColor(Colors.white12);
-
-  charts.Color _labelColor(BuildContext context) =>
-      Theme.of(context).brightness == Brightness.light
-          ? util.fromDartColor(Colors.black38)
-          : util.fromDartColor(Colors.white38);
-
-  charts.Color _lineColor(BuildContext context) =>
-      util.fromDartColor(Theme.of(context).accentColor);
+  int _getValue(charts.SelectionModel model) =>
+      model.selectedSeries[0].measureFn(model.selectedDatum[0].index);
 }

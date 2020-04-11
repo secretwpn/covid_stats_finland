@@ -26,6 +26,20 @@ class InfoPage extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     RichText(
+                      text: TextSpan(
+                        style: Theme.of(context).textTheme.body1,
+                        children: <TextSpan>[
+                          Hyperlink(
+                            'App source code',
+                            'https://github.com/secretwpn/covid_stats_finland',
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 12,
+                    ),
+                    RichText(
                       softWrap: true,
                       text: TextSpan(
                         text: 'Open data source: ',
@@ -41,24 +55,13 @@ class InfoPage extends StatelessWidget {
                     SizedBox(
                       height: 12,
                     ),
-                    Container(
-                      alignment: Alignment.center,
-                      child: Text(
-                        "The data is updated once every few days",
-                        style: Theme.of(context).textTheme.body1,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 12,
-                    ),
                     RichText(
                       softWrap: true,
                       text: TextSpan(
-                        text: 'World Health Organization Summary: ',
                         style: Theme.of(context).textTheme.body1,
                         children: <TextSpan>[
                           Hyperlink(
-                            'WHO',
+                            'WHO summary',
                             'https://www.who.int/emergencies/diseases/novel-coronavirus-2019',
                           ),
                         ],
@@ -68,13 +71,28 @@ class InfoPage extends StatelessWidget {
                       height: 12,
                     ),
                     RichText(
+                      softWrap: true,
                       text: TextSpan(
-                        text: 'Author: ',
                         style: Theme.of(context).textTheme.body1,
                         children: <TextSpan>[
                           Hyperlink(
-                            'secretwpn',
-                            'https://github.com/secretwpn',
+                            'THL koronakartta',
+                            'https://thl.fi/koronakartta',
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 12,
+                    ),
+                    RichText(
+                      softWrap: true,
+                      text: TextSpan(
+                        style: Theme.of(context).textTheme.body1,
+                        children: <TextSpan>[
+                          Hyperlink(
+                            'COVID-19 Dashboard',
+                            'https://covid19.mustafasaifee.com/',
                           ),
                         ],
                       ),
