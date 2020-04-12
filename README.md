@@ -23,3 +23,16 @@ The app is tested to run on Android and iOS, but should also work on macOS and, 
 Small scale COVID-19 related apps are not allowed to be distributed through Google Play, and this app is no exception.
 
 Self signed release build is available here: [app-release.apk](https://github.com/secretwpn/covid_stats_finland/raw/master/apk/app-release.apk)
+
+# Development
+
+This is a [Flutter](https://flutter.dev/) app.
+
+A few resources to get you started if this is your first Flutter project:
+
+- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+
+For help getting started with Flutter, view our
+[online documentation](https://flutter.dev/docs), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.
