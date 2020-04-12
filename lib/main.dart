@@ -6,6 +6,8 @@ import 'package:covid_stats_finland/components/icon_label.dart';
 import 'package:covid_stats_finland/components/info_page.dart';
 import 'package:covid_stats_finland/models/api_response.dart';
 import 'package:covid_stats_finland/models/app_model.dart';
+import 'package:covid_stats_finland/models/hcd.dart';
+import 'package:covid_stats_finland/models/hospitalized_hcd.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
@@ -41,65 +43,74 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   ThemeMode _themeMode = ThemeMode.light;
+
   @override
-  Widget build(BuildContext context) => AdvancedFutureBuilder<ApiResponse>(
-      future: fetchData(),
-      successWidgetBuilder: (response) {
-        var confirmedHcdList = response.confirmedHcdList.toList();
-        var hospitalizedHcdList = response.hospitalizedHcdList.toList();
-        confirmedHcdList.sort(
-            (a, b) => b.getConfirmedTotal().compareTo(a.getConfirmedTotal()));
-
-        hospitalizedHcdList
-            .sort((a, b) => b.getLatestTotal().compareTo(a.getLatestTotal()));
-
-        return MultiProvider(
-          providers: <SingleChildWidget>[
-            ChangeNotifierProvider(
-              create: (_) => UiModel(),
-              lazy: true,
-            ),
-            ChangeNotifierProvider(
-              create: (_) => SelectionModel(),
-              lazy: true,
-            ),
-          ],
-          child: MaterialApp(
-            themeMode: _themeMode,
-            theme: _darkTheme,
-            darkTheme: _lightTheme,
-            home: DefaultTabController(
-              length: 2,
-              child: Scaffold(
-                appBar: AppBar(
-                  title: Text('COVID-19 Finland'),
-                  actions: <Widget>[
-                    _buildThemeSwitchButton(),
-                    _buildInfoButton(),
-                  ],
-                  bottom: TabBar(
-                    tabs: [
-                      Tab(
-                        child: IconLabel(icon: Icons.people, text: "Confirmed"),
-                      ),
-                      Tab(
-                        child: IconLabel(
-                            icon: Icons.local_hospital, text: "Hospitalized"),
-                      ),
-                    ],
-                  ),
+  Widget build(BuildContext context) => MaterialApp(
+        themeMode: _themeMode,
+        theme: _darkTheme,
+        darkTheme: _lightTheme,
+        home: AdvancedFutureBuilder<ApiResponse>(
+          future: fetchData(),
+          successWidgetBuilder: (response) {
+            var confirmedHcdList = response.confirmedHcdList.toList();
+            var hospitalizedHcdList = response.hospitalizedHcdList.toList();
+            confirmedHcdList.sort(
+              (a, b) => b.getConfirmedTotal().compareTo(a.getConfirmedTotal()),
+            );
+            hospitalizedHcdList.sort(
+              (a, b) => b.getLatestTotal().compareTo(a.getLatestTotal()),
+            );
+            return MultiProvider(
+              providers: <SingleChildWidget>[
+                ChangeNotifierProvider(
+                  create: (_) => UiModel(),
+                  lazy: true,
                 ),
-                body: TabBarView(
-                  children: [
-                    ConfirmedCasesDisplay(hcdList: confirmedHcdList),
-                    HospitalizedCasesDisplay(hcdList: hospitalizedHcdList),
-                  ],
+                ChangeNotifierProvider(
+                  create: (_) => SelectionModel(),
+                  lazy: true,
                 ),
+              ],
+              child: buildDefaultTabController(
+                confirmedHcdList,
+                hospitalizedHcdList,
               ),
+            );
+          },
+        ),
+      );
+
+  DefaultTabController buildDefaultTabController(List<Hcd> confirmedHcdList,
+          List<HospitalizedHcd> hospitalizedHcdList) =>
+      DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text('COVID-19 Finland'),
+            actions: <Widget>[
+              _buildThemeSwitchButton(),
+              _buildInfoButton(),
+            ],
+            bottom: TabBar(
+              tabs: [
+                Tab(
+                  child: IconLabel(icon: Icons.people, text: "Confirmed"),
+                ),
+                Tab(
+                  child: IconLabel(
+                      icon: Icons.local_hospital, text: "Hospitalized"),
+                ),
+              ],
             ),
           ),
-        );
-      });
+          body: TabBarView(
+            children: [
+              ConfirmedCasesDisplay(hcdList: confirmedHcdList),
+              HospitalizedCasesDisplay(hcdList: hospitalizedHcdList),
+            ],
+          ),
+        ),
+      );
 
   Widget _buildInfoButton() => Consumer<UiModel>(
         builder: (BuildContext context, UiModel model, Widget child) =>
