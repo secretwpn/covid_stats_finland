@@ -31,11 +31,17 @@ dependencies:
   cupertino_icons: ^0.1.2
 
 dev_dependencies:
+  flutter_launcher_icons: ^0.7.4
   flutter_test:
     sdk: flutter
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
+
+flutter_icons:
+  android: "ic_launcher"
+  ios: true
+  image_path: 'assets/launcher/icon.png'
 
 # The following section is specific to Flutter.
 flutter:
@@ -46,10 +52,10 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
+  assets:
+   - assets/launcher/icon.png
   #  - assets/data-confirmed.json
   #  - assets/data-hospitalized.json
-  #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
