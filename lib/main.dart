@@ -43,13 +43,15 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   ThemeMode _themeMode = ThemeMode.light;
-
+  var _refreshKey = GlobalKey();
   @override
   Widget build(BuildContext context) => MaterialApp(
+        debugShowCheckedModeBanner: false,
         themeMode: _themeMode,
         theme: _darkTheme,
         darkTheme: _lightTheme,
         home: AdvancedFutureBuilder<ApiResponse>(
+          key: _refreshKey,
           future: fetchData(),
           successWidgetBuilder: (response) {
             var confirmedHcdList = response.confirmedHcdList.toList();
@@ -71,7 +73,7 @@ class _MyAppState extends State<MyApp> {
                   lazy: true,
                 ),
               ],
-              child: buildDefaultTabController(
+              child: _buildDefaultTabController(
                 confirmedHcdList,
                 hospitalizedHcdList,
               ),
@@ -80,7 +82,7 @@ class _MyAppState extends State<MyApp> {
         ),
       );
 
-  DefaultTabController buildDefaultTabController(List<Hcd> confirmedHcdList,
+  DefaultTabController _buildDefaultTabController(List<Hcd> confirmedHcdList,
           List<HospitalizedHcd> hospitalizedHcdList) =>
       DefaultTabController(
         length: 2,
@@ -90,20 +92,27 @@ class _MyAppState extends State<MyApp> {
             actions: <Widget>[
               _buildThemeSwitchButton(),
               _buildInfoButton(),
+              _buildRefreshButton(),
             ],
             bottom: TabBar(
               tabs: [
                 Tab(
-                  child: IconLabel(icon: Icons.people, text: "Confirmed"),
+                  child: IconLabel(
+                    icon: Icons.people,
+                    text: "Confirmed",
+                  ),
                 ),
                 Tab(
                   child: IconLabel(
-                      icon: Icons.local_hospital, text: "Hospitalized"),
+                    icon: Icons.local_hospital,
+                    text: "Hospitalized",
+                  ),
                 ),
               ],
             ),
           ),
           body: TabBarView(
+            // physics: NeverScrollableScrollPhysics(),
             children: [
               ConfirmedCasesDisplay(hcdList: confirmedHcdList),
               HospitalizedCasesDisplay(hcdList: hospitalizedHcdList),
@@ -121,6 +130,15 @@ class _MyAppState extends State<MyApp> {
             MaterialPageRoute(builder: (context) => InfoPage()),
           ),
         ),
+      );
+
+  Widget _buildRefreshButton() => Consumer<UiModel>(
+        builder: (BuildContext context, UiModel model, Widget child) =>
+            IconButton(
+                icon: Icon(Icons.refresh),
+                onPressed: () => setState(() {
+                      _refreshKey = GlobalKey();
+                    })),
       );
 
   Widget _buildThemeSwitchButton() => Consumer<UiModel>(
