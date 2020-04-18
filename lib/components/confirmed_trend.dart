@@ -59,7 +59,7 @@ class ConfirmedTrend extends StatelessWidget {
       dateTimeFactory: const charts.LocalDateTimeFactory(),
       animate: false,
       defaultInteractions: true,
-      defaultRenderer: charts.LineRendererConfig<DateTime>(),
+      defaultRenderer: charts.BarRendererConfig<DateTime>(),
       primaryMeasureAxis: charts.NumericAxisSpec(
         renderSpec: charts.GridlineRendererSpec(
           lineStyle: charts.LineStyleSpec(color: gridColor),

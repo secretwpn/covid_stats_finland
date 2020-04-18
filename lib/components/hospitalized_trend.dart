@@ -51,9 +51,10 @@ class HospitalizedByTimeTrend extends StatelessWidget {
         ),
         behaviors: [
           charts.SeriesLegend(
-              position: charts.BehaviorPosition.bottom,
-              outsideJustification: charts.OutsideJustification.start,
-              showMeasures: true),
+            position: charts.BehaviorPosition.bottom,
+            outsideJustification: charts.OutsideJustification.start,
+            showMeasures: true,
+          ),
           charts.SelectNearest(eventTrigger: charts.SelectionTrigger.tap),
         ],
         layoutConfig: chartLayout,
