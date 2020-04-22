@@ -1,1 +1,2 @@
-enum TrendMode { daily, cumulative }
+enum ConfirmedTrendMode { daily, cumulative }
+enum HospitalizedTrendMode { hospitalized, dead }

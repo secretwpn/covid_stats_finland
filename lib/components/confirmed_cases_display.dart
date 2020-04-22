@@ -32,7 +32,7 @@ class ConfirmedCasesDisplay extends StatelessWidget {
               builder: (BuildContext _, UiModel uiModel, Widget __) =>
                   ConfirmedTrend(
                 samples: hcdList[uiModel.selectedConfirmedHcdIndex].samples,
-                mode: uiModel.trendMode,
+                mode: uiModel.confirmedTrendMode,
                 onSelectValue: (DateTime dateTime, int value) {
                   Provider.of<SelectionModel>(context, listen: false)
                       .selectedValue = value;
@@ -46,8 +46,8 @@ class ConfirmedCasesDisplay extends StatelessWidget {
             padding: const EdgeInsets.only(left: 12.0),
             child: ButtonBar(
               children: <Widget>[
-                _buildTrendModeButton(TrendMode.daily),
-                _buildTrendModeButton(TrendMode.cumulative),
+                _buildTrendModeButton(ConfirmedTrendMode.daily),
+                _buildTrendModeButton(ConfirmedTrendMode.cumulative),
               ],
             ),
           ),
@@ -77,13 +77,13 @@ class ConfirmedCasesDisplay extends StatelessWidget {
         ),
       );
 
-  _buildTrendModeButton(TrendMode mode) {
+  _buildTrendModeButton(ConfirmedTrendMode mode) {
     String labelText;
     switch (mode) {
-      case TrendMode.cumulative:
+      case ConfirmedTrendMode.cumulative:
         labelText = "Cumulative";
         break;
-      case TrendMode.daily:
+      case ConfirmedTrendMode.daily:
         labelText = "Daily";
         break;
       default:
@@ -92,13 +92,13 @@ class ConfirmedCasesDisplay extends StatelessWidget {
     }
     return Consumer<UiModel>(
       builder: (BuildContext context, UiModel model, Widget _) => FlatButton(
-        color: mode == model.trendMode
+        color: mode == model.confirmedTrendMode
             ? Theme.of(context).accentColor
             : Colors.transparent,
-        textColor: mode == model.trendMode
+        textColor: mode == model.confirmedTrendMode
             ? Theme.of(context).backgroundColor
             : Theme.of(context).accentColor,
-        onPressed: () => model.trendMode = mode,
+        onPressed: () => model.confirmedTrendMode = mode,
         child: Text(labelText),
       ),
     );

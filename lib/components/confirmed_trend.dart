@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 
 class ConfirmedTrend extends StatelessWidget {
   final List<ConfirmedSample> samples;
-  final TrendMode mode;
+  final ConfirmedTrendMode mode;
   final void Function(DateTime, int) onSelectValue;
 
   const ConfirmedTrend({
@@ -25,13 +25,13 @@ class ConfirmedTrend extends StatelessWidget {
     );
   }
 
-  Widget _buildChart(BuildContext context, TrendMode mode) {
+  Widget _buildChart(BuildContext context, ConfirmedTrendMode mode) {
     Widget widget;
     switch (mode) {
-      case TrendMode.cumulative:
+      case ConfirmedTrendMode.cumulative:
         widget = _buildCumulativeChart(context);
         break;
-      case TrendMode.daily:
+      case ConfirmedTrendMode.daily:
         widget = _buildDailyChart(context);
         break;
       default:

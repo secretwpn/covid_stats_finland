@@ -49,7 +49,9 @@ class SelectionModel with ChangeNotifier {
 }
 
 class UiModel with ChangeNotifier {
-  TrendMode _trendMode = TrendMode.cumulative;
+  ConfirmedTrendMode _confirmedTrendMode = ConfirmedTrendMode.cumulative;
+  HospitalizedTrendMode _hospitalizedTrendMode = HospitalizedTrendMode.hospitalized;
+
   int _selectedConfirmedHcdIndex = 0;
   int _selectedHospitalizedHcdIndex = 0;
 
@@ -69,11 +71,18 @@ class UiModel with ChangeNotifier {
     notifyListeners();
   }
 
-  TrendMode get trendMode => _trendMode;
+  ConfirmedTrendMode get confirmedTrendMode => _confirmedTrendMode;
+  HospitalizedTrendMode get hospitalizedTrendMode => _hospitalizedTrendMode;
 
-  set trendMode(TrendMode value) {
-    if (_trendMode == value) return;
-    _trendMode = value;
+  set confirmedTrendMode(ConfirmedTrendMode value) {
+    if (_confirmedTrendMode == value) return;
+    _confirmedTrendMode = value;
+    notifyListeners();
+  }
+
+  set hospitalizedTrendMode(HospitalizedTrendMode value) {
+    if (_hospitalizedTrendMode == value) return;
+    _hospitalizedTrendMode = value;
     notifyListeners();
   }
 }

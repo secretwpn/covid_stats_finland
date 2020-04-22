@@ -19,7 +19,7 @@ void main() {
 final _darkTheme = ThemeData.from(
   colorScheme: ColorScheme.fromSwatch(
     backgroundColor: Colors.black,
-    primaryColorDark: Colors.white54,
+    // primaryColorDark: Colors.white54,
     accentColor: Colors.blue,
     primarySwatch: Colors.blue,
     brightness: Brightness.dark,
@@ -48,8 +48,8 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) => MaterialApp(
         debugShowCheckedModeBanner: false,
         themeMode: _themeMode,
-        theme: _darkTheme,
-        darkTheme: _lightTheme,
+        theme: _lightTheme,
+        darkTheme: _darkTheme,
         home: AdvancedFutureBuilder<ApiResponse>(
           key: _refreshKey,
           future: fetchData(),

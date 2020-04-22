@@ -18,7 +18,7 @@ class InfoPage extends StatelessWidget {
                 alignment: Alignment.center,
                 child: Text(
                   "COVID-19 Finland",
-                  style: Theme.of(context).textTheme.headline,
+                  style: Theme.of(context).textTheme.headline5,
                 ),
               ),
               Flexible(
@@ -27,7 +27,7 @@ class InfoPage extends StatelessWidget {
                   children: <Widget>[
                     RichText(
                       text: TextSpan(
-                        style: Theme.of(context).textTheme.body1,
+                        style: Theme.of(context).textTheme.bodyText2,
                         children: <TextSpan>[
                           Hyperlink(
                             'App source code',
@@ -43,7 +43,7 @@ class InfoPage extends StatelessWidget {
                       softWrap: true,
                       text: TextSpan(
                         text: 'Open data source: ',
-                        style: Theme.of(context).textTheme.body1,
+                        style: Theme.of(context).textTheme.bodyText2,
                         children: <TextSpan>[
                           Hyperlink(
                             'HS-Datadesk',
@@ -58,7 +58,7 @@ class InfoPage extends StatelessWidget {
                     RichText(
                       softWrap: true,
                       text: TextSpan(
-                        style: Theme.of(context).textTheme.body1,
+                        style: Theme.of(context).textTheme.bodyText2,
                         children: <TextSpan>[
                           Hyperlink(
                             'WHO summary',
@@ -73,7 +73,7 @@ class InfoPage extends StatelessWidget {
                     RichText(
                       softWrap: true,
                       text: TextSpan(
-                        style: Theme.of(context).textTheme.body1,
+                        style: Theme.of(context).textTheme.bodyText2,
                         children: <TextSpan>[
                           Hyperlink(
                             'THL koronakartta',
@@ -88,7 +88,7 @@ class InfoPage extends StatelessWidget {
                     RichText(
                       softWrap: true,
                       text: TextSpan(
-                        style: Theme.of(context).textTheme.body1,
+                        style: Theme.of(context).textTheme.bodyText2,
                         children: <TextSpan>[
                           Hyperlink(
                             'COVID-19 Dashboard',
@@ -102,7 +102,7 @@ class InfoPage extends StatelessWidget {
               ),
               Text(
                 'Stay home, stay safe.',
-                style: Theme.of(context).textTheme.body1,
+                style: Theme.of(context).textTheme.bodyText2,
               ),
             ],
           ),
