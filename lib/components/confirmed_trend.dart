@@ -46,15 +46,12 @@ class ConfirmedTrend extends StatelessWidget {
         animate: false,
         defaultInteractions: true,
         disjointMeasureAxes: LinkedHashMap<String, charts.NumericAxisSpec>.from({
-          'total': charts.NumericAxisSpec(),
+          'total': charts.NumericAxisSpec(renderSpec: charts.GridlineRendererSpec(
+            lineStyle: charts.LineStyleSpec(color: gridColor),
+            labelStyle: charts.TextStyleSpec(color: labelColor),
+          ),),
           'daily': charts.NumericAxisSpec(),
         }),
-        // primaryMeasureAxis: charts.NumericAxisSpec(
-          // renderSpec: charts.GridlineRendererSpec(
-          //   lineStyle: charts.LineStyleSpec(color: gridColor),
-          //   labelStyle: charts.TextStyleSpec(color: labelColor),
-          // ),
-        // ),
         domainAxis: charts.DateTimeAxisSpec(
           tickProviderSpec: charts.DateTimeEndPointsTickProviderSpec(),
           renderSpec: charts.GridlineRendererSpec(
