@@ -29,79 +29,80 @@ class HospitalizedByTimeTrend extends StatelessWidget {
     BuildContext context,
     charts.Color gridColor,
     charts.Color labelColor,
-  ) => charts.TimeSeriesChart(
-      [
-         charts.Series<HospitalizedSample, DateTime>(
-          id: 'Ward',
-          domainFn: (HospitalizedSample sample, _) => sample.date,
-          measureFn: (HospitalizedSample sample, _) => sample.ward,
-          data: hcd.samples,
-          colorFn: (_, __) => _wardColor(context),
-        ),
-        charts.Series<HospitalizedSample, DateTime>(
-          id: 'Intensive care',
-          domainFn: (HospitalizedSample sample, _) => sample.date,
-          measureFn: (HospitalizedSample sample, _) => sample.icu,
-          data: hcd.samples,
-          colorFn: (_, __) => _icuColor(context),
-        ),
-        charts.Series<HospitalizedSample, DateTime>(
-          id: 'Dead',
-          domainFn: (HospitalizedSample sample, _) => sample.date,
-          measureFn: (HospitalizedSample sample, _) => sample.dead,
-          data: hcd.samples,
-          colorFn: (_, __) => _deadColor(context),
-        ),
-      ],
-      animate: false,
-      behaviors: [
-        charts.SeriesLegend(
-          position: charts.BehaviorPosition.bottom,
-          outsideJustification: charts.OutsideJustification.start,
-          showMeasures: true,
-        ),
-        charts.SelectNearest(eventTrigger: charts.SelectionTrigger.tap),
-      ],
-      layoutConfig: chartLayout,
-      selectionModels: [
-        charts.SelectionModelConfig(
-            changedListener: (charts.SelectionModel model) {
-          if (model.hasDatumSelection) {
-            HospitalizedSample selectedSample = model.selectedDatum[0].datum;
-            onSelectValue(selectedSample);
-          }
-        })
-      ],
-      primaryMeasureAxis: charts.NumericAxisSpec(
-        renderSpec: charts.GridlineRendererSpec(
-          lineStyle: charts.LineStyleSpec(color: gridColor),
-          labelStyle: charts.TextStyleSpec(color: labelColor),
-        ),
-      ),
-      domainAxis: charts.DateTimeAxisSpec(
-        tickFormatterSpec: charts.AutoDateTimeTickFormatterSpec(
-          hour: charts.TimeFormatterSpec(
-            format: "d MMM",
-            transitionFormat: "d MMM",
+  ) =>
+      charts.TimeSeriesChart(
+        [
+          charts.Series<HospitalizedSample, DateTime>(
+            id: 'Ward',
+            domainFn: (HospitalizedSample sample, _) => sample.date,
+            measureFn: (HospitalizedSample sample, _) => sample.ward,
+            data: hcd.samples,
+            seriesColor: _wardColor(context),
+          ),
+          charts.Series<HospitalizedSample, DateTime>(
+            id: 'Intensive care',
+            domainFn: (HospitalizedSample sample, _) => sample.date,
+            measureFn: (HospitalizedSample sample, _) => sample.icu,
+            data: hcd.samples,
+            seriesColor: _icuColor(context),
+          ),
+          charts.Series<HospitalizedSample, DateTime>(
+            id: 'Dead',
+            domainFn: (HospitalizedSample sample, _) => sample.date,
+            measureFn: (HospitalizedSample sample, _) => sample.dead,
+            data: hcd.samples,
+            seriesColor: _deadColor(context),
+          ),
+        ],
+        animate: false,
+        behaviors: [
+          charts.SeriesLegend(
+            position: charts.BehaviorPosition.bottom,
+            outsideJustification: charts.OutsideJustification.start,
+            showMeasures: true,
+          ),
+          charts.SelectNearest(eventTrigger: charts.SelectionTrigger.tap),
+        ],
+        layoutConfig: chartLayout,
+        selectionModels: [
+          charts.SelectionModelConfig(
+              changedListener: (charts.SelectionModel model) {
+            if (model.hasDatumSelection) {
+              HospitalizedSample selectedSample = model.selectedDatum[0].datum;
+              onSelectValue(selectedSample);
+            }
+          })
+        ],
+        primaryMeasureAxis: charts.NumericAxisSpec(
+          renderSpec: charts.GridlineRendererSpec(
+            lineStyle: charts.LineStyleSpec(color: gridColor),
+            labelStyle: charts.TextStyleSpec(color: labelColor),
           ),
         ),
-        tickProviderSpec: charts.DateTimeEndPointsTickProviderSpec(),
-        renderSpec: charts.GridlineRendererSpec(
-          lineStyle: charts.LineStyleSpec(color: gridColor),
-          labelStyle: charts.TextStyleSpec(color: labelColor),
+        domainAxis: charts.DateTimeAxisSpec(
+          tickFormatterSpec: charts.AutoDateTimeTickFormatterSpec(
+            hour: charts.TimeFormatterSpec(
+              format: "d MMM",
+              transitionFormat: "d MMM",
+            ),
+          ),
+          tickProviderSpec: charts.DateTimeEndPointsTickProviderSpec(),
+          renderSpec: charts.GridlineRendererSpec(
+            lineStyle: charts.LineStyleSpec(color: gridColor),
+            labelStyle: charts.TextStyleSpec(color: labelColor),
+          ),
         ),
-      ),
-    );
+      );
 
   static _deadColor(BuildContext context) =>
       Theme.of(context).brightness == Brightness.light
           ? charts.MaterialPalette.black
           : util.fromDartColor(Theme.of(context).accentColor.withAlpha(80));
 
-  static _icuColor(BuildContext context) => Theme.of(context).brightness == Brightness.light
+  static _icuColor(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.light
           ? util.fromDartColor(Colors.redAccent)
           : util.fromDartColor(Colors.redAccent);
-
 
   static _wardColor(BuildContext context) =>
       Theme.of(context).brightness == Brightness.light

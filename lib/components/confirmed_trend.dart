@@ -26,7 +26,6 @@ class ConfirmedTrend extends StatelessWidget {
         [
           charts.Series<ConfirmedSample, DateTime>(
             id: 'Total',
-            // colorFn: (_, __) => _cumulColor(context),
             domainFn: (ConfirmedSample sample, _) => sample.date,
             measureFn: (ConfirmedSample sample, _) =>
                 ConfirmedSample.getConfirmedToDate(sample.date, samples),
@@ -35,21 +34,23 @@ class ConfirmedTrend extends StatelessWidget {
           )..setAttribute(charts.measureAxisIdKey, 'total'),
           charts.Series<ConfirmedSample, DateTime>(
             id: 'Daily',
-            // colorFn: (_, __) => _dailyColor(context),
             domainFn: (ConfirmedSample sample, _) => sample.date,
             measureFn: (ConfirmedSample sample, _) => sample.value,
             data: samples,
-            seriesColor:  _dailyColor(context),
+            seriesColor: _dailyColor(context),
           )..setAttribute(charts.measureAxisIdKey, 'daily')
         ],
         dateTimeFactory: const charts.LocalDateTimeFactory(),
         animate: false,
         defaultInteractions: true,
-        disjointMeasureAxes: LinkedHashMap<String, charts.NumericAxisSpec>.from({
-          'total': charts.NumericAxisSpec(renderSpec: charts.GridlineRendererSpec(
-            lineStyle: charts.LineStyleSpec(color: gridColor),
-            labelStyle: charts.TextStyleSpec(color: labelColor),
-          ),),
+        disjointMeasureAxes:
+            LinkedHashMap<String, charts.NumericAxisSpec>.from({
+          'total': charts.NumericAxisSpec(
+            renderSpec: charts.GridlineRendererSpec(
+              lineStyle: charts.LineStyleSpec(color: gridColor),
+              labelStyle: charts.TextStyleSpec(color: labelColor),
+            ),
+          ),
           'daily': charts.NumericAxisSpec(),
         }),
         domainAxis: charts.DateTimeAxisSpec(
