@@ -2,20 +2,17 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:covid_stats_finland/constants.dart';
 import 'package:covid_stats_finland/models/hospitalized_hcd.dart';
 import 'package:covid_stats_finland/models/hospitalized_sample.dart';
-import 'package:covid_stats_finland/models/trend_mode.dart';
 import 'package:covid_stats_finland/util.dart' as util;
 import 'package:flutter/material.dart';
 
 class HospitalizedByTimeTrend extends StatelessWidget {
   final HospitalizedHcd hcd;
-  final HospitalizedTrendMode mode;
   final void Function(HospitalizedSample) onSelectValue;
 
   const HospitalizedByTimeTrend({
     Key key,
     @required this.hcd,
     @required this.onSelectValue,
-    this.mode,
   }) : super(key: key);
 
   @override
@@ -32,13 +29,31 @@ class HospitalizedByTimeTrend extends StatelessWidget {
     BuildContext context,
     charts.Color gridColor,
     charts.Color labelColor,
-  ) {
-    return charts.TimeSeriesChart(
-      _buildSeries(context, mode),
-      animate: true,
-      defaultRenderer: charts.BarRendererConfig<DateTime>(
-        groupingType: charts.BarGroupingType.stacked,
-      ),
+  ) => charts.TimeSeriesChart(
+      [
+         charts.Series<HospitalizedSample, DateTime>(
+          id: 'Ward',
+          domainFn: (HospitalizedSample sample, _) => sample.date,
+          measureFn: (HospitalizedSample sample, _) => sample.ward,
+          data: hcd.samples,
+          colorFn: (_, __) => _wardColor(context),
+        ),
+        charts.Series<HospitalizedSample, DateTime>(
+          id: 'Intensive care',
+          domainFn: (HospitalizedSample sample, _) => sample.date,
+          measureFn: (HospitalizedSample sample, _) => sample.icu,
+          data: hcd.samples,
+          colorFn: (_, __) => _icuColor(context),
+        ),
+        charts.Series<HospitalizedSample, DateTime>(
+          id: 'Dead',
+          domainFn: (HospitalizedSample sample, _) => sample.date,
+          measureFn: (HospitalizedSample sample, _) => sample.dead,
+          data: hcd.samples,
+          colorFn: (_, __) => _deadColor(context),
+        ),
+      ],
+      animate: false,
       behaviors: [
         charts.SeriesLegend(
           position: charts.BehaviorPosition.bottom,
@@ -77,46 +92,19 @@ class HospitalizedByTimeTrend extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  List<charts.Series<dynamic, DateTime>> _buildSeries(
-      BuildContext context, HospitalizedTrendMode mode) {
-    if (mode == HospitalizedTrendMode.dead)
-      return [
-        charts.Series<HospitalizedSample, DateTime>(
-          id: 'Dead',
-          domainFn: (HospitalizedSample sample, _) => sample.date,
-          measureFn: (HospitalizedSample sample, _) => sample.dead,
-          data: hcd.samples,
-          colorFn: (_, __) => _deadColor(context),
-        ),
-      ];
-    else
-      return [
-        charts.Series<HospitalizedSample, DateTime>(
-          id: 'Ward',
-          domainFn: (HospitalizedSample sample, _) => sample.date,
-          measureFn: (HospitalizedSample sample, _) => sample.ward,
-          data: hcd.samples,
-          colorFn: (_, __) => _wardColor(context),
-        ),
-        charts.Series<HospitalizedSample, DateTime>(
-          id: 'Intensive care',
-          domainFn: (HospitalizedSample sample, _) => sample.date,
-          measureFn: (HospitalizedSample sample, _) => sample.icu,
-          data: hcd.samples,
-          colorFn: (_, __) => _icuColor(context),
-        ),
-      ];
-  }
 
   static _deadColor(BuildContext context) =>
       Theme.of(context).brightness == Brightness.light
           ? charts.MaterialPalette.black
           : util.fromDartColor(Theme.of(context).accentColor.withAlpha(80));
-  static _icuColor(BuildContext context) =>
-      util.fromDartColor(Theme.of(context).accentColor);
+
+  static _icuColor(BuildContext context) => Theme.of(context).brightness == Brightness.light
+          ? util.fromDartColor(Colors.redAccent)
+          : util.fromDartColor(Colors.redAccent);
+
 
   static _wardColor(BuildContext context) =>
-      util.fromDartColor(Theme.of(context).accentColor.withAlpha(170));
+      Theme.of(context).brightness == Brightness.light
+          ? util.fromDartColor(Colors.blueAccent)
+          : util.fromDartColor(Colors.blueAccent);
 }

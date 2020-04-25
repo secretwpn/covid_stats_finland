@@ -2,7 +2,6 @@ import 'package:covid_stats_finland/components/hospitalized_trend.dart';
 import 'package:covid_stats_finland/models/app_model.dart';
 import 'package:covid_stats_finland/models/hospitalized_hcd.dart';
 import 'package:covid_stats_finland/models/hospitalized_sample.dart';
-import 'package:covid_stats_finland/models/trend_mode.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -30,22 +29,12 @@ class HospitalizedCasesDisplay extends StatelessWidget {
               child: Consumer<UiModel>(
                 builder: (BuildContext _, UiModel uiModel, Widget __) =>
                     HospitalizedByTimeTrend(
-                  mode: uiModel.hospitalizedTrendMode,
                   hcd: hcdList[uiModel.selectedHospitalizedHcdIndex],
                   onSelectValue: (HospitalizedSample value) {
                     Provider.of<SelectionModel>(context, listen: false)
                         .selectedHospitalizedSample = value;
                   },
                 ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 12.0),
-              child: ButtonBar(
-                children: <Widget>[
-                  _buildTrendModeButton(HospitalizedTrendMode.hospitalized),
-                  _buildTrendModeButton(HospitalizedTrendMode.dead),
-                ],
               ),
             ),
             Expanded(
@@ -57,32 +46,6 @@ class HospitalizedCasesDisplay extends StatelessWidget {
         ),
       );
 
-  Widget _buildTrendModeButton(HospitalizedTrendMode mode) {
-    String labelText;
-    switch (mode) {
-      case HospitalizedTrendMode.hospitalized:
-        labelText = "Hospitalized";
-        break;
-      case HospitalizedTrendMode.dead:
-        labelText = "Dead";
-        break;
-      default:
-        labelText = "unknown";
-        break;
-    }
-    return Consumer<UiModel>(
-      builder: (BuildContext context, UiModel model, Widget _) => FlatButton(
-        color: mode == model.hospitalizedTrendMode
-            ? Theme.of(context).accentColor
-            : Colors.transparent,
-        textColor: mode == model.hospitalizedTrendMode
-            ? Theme.of(context).backgroundColor
-            : Theme.of(context).accentColor,
-        onPressed: () => model.hospitalizedTrendMode = mode,
-        child: Text(labelText),
-      ),
-    );
-  }
 
   Widget _buildListView(BuildContext context, UiModel uiModel, Widget _) =>
       ListView.builder(

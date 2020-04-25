@@ -1,7 +1,6 @@
 import 'package:covid_stats_finland/components/confirmed_trend.dart';
 import 'package:covid_stats_finland/models/app_model.dart';
 import 'package:covid_stats_finland/models/hcd.dart';
-import 'package:covid_stats_finland/models/trend_mode.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -10,8 +9,7 @@ class ConfirmedCasesDisplay extends StatelessWidget {
   const ConfirmedCasesDisplay({Key key, this.hcdList}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
+  Widget build(BuildContext context) => Container(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.max,
@@ -22,7 +20,7 @@ class ConfirmedCasesDisplay extends StatelessWidget {
                     ? Padding(
                         padding: EdgeInsets.only(top: 24),
                         child: Text(
-                          "${model.selectedValue} confirmed cases on ${model.selectedConfirmedDateFormatted}",
+                          "${model.selectedConfirmedDateFormatted}",
                         ),
                       )
                     : SizedBox(),
@@ -32,7 +30,6 @@ class ConfirmedCasesDisplay extends StatelessWidget {
               builder: (BuildContext _, UiModel uiModel, Widget __) =>
                   ConfirmedTrend(
                 samples: hcdList[uiModel.selectedConfirmedHcdIndex].samples,
-                mode: uiModel.confirmedTrendMode,
                 onSelectValue: (DateTime dateTime, int value) {
                   Provider.of<SelectionModel>(context, listen: false)
                       .selectedValue = value;
@@ -40,15 +37,6 @@ class ConfirmedCasesDisplay extends StatelessWidget {
                       .selectedConfirmedDate = dateTime;
                 },
               ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 12.0),
-            child: ButtonBar(
-              children: <Widget>[
-                _buildTrendModeButton(ConfirmedTrendMode.daily),
-                _buildTrendModeButton(ConfirmedTrendMode.cumulative),
-              ],
             ),
           ),
           Expanded(
@@ -59,7 +47,6 @@ class ConfirmedCasesDisplay extends StatelessWidget {
         ],
       ),
     );
-  }
 
   Widget _buildListView(BuildContext context, UiModel uiModel, Widget _) =>
       ListView.builder(
@@ -76,31 +63,4 @@ class ConfirmedCasesDisplay extends StatelessWidget {
           onTap: () => uiModel.selectedConfirmedHcdIndex = i,
         ),
       );
-
-  _buildTrendModeButton(ConfirmedTrendMode mode) {
-    String labelText;
-    switch (mode) {
-      case ConfirmedTrendMode.cumulative:
-        labelText = "Cumulative";
-        break;
-      case ConfirmedTrendMode.daily:
-        labelText = "Daily";
-        break;
-      default:
-        labelText = "unknown";
-        break;
-    }
-    return Consumer<UiModel>(
-      builder: (BuildContext context, UiModel model, Widget _) => FlatButton(
-        color: mode == model.confirmedTrendMode
-            ? Theme.of(context).accentColor
-            : Colors.transparent,
-        textColor: mode == model.confirmedTrendMode
-            ? Theme.of(context).backgroundColor
-            : Theme.of(context).accentColor,
-        onPressed: () => model.confirmedTrendMode = mode,
-        child: Text(labelText),
-      ),
-    );
-  }
 }
